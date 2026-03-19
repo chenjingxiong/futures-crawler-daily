@@ -5,7 +5,8 @@
 ## 功能特性
 
 ### 数据采集
-- 支持多数据源：东方财富期货、新浪期货、同花顺期货
+- **真实数据源**：AKShare、东方财富API、新浪期货API
+- **爬虫模块**：东方财富期货、新浪期货、同花顺期货
 - 实时行情爬取
 - 历史K线数据获取
 - 市场概览数据
@@ -38,10 +39,15 @@ futures_crawler/
 ├── __init__.py              # 包初始化
 ├── main.py                  # 主程序入口
 ├── demo.py                  # 演示脚本
+├── daily_report_real.py     # 每日报告生成器（真实数据）
+├── run_daily.sh             # 每日任务执行脚本
+├── setup_cron.sh            # 定时任务安装脚本
 ├── base_crawler.py          # 爬虫基类
 ├── data_storage.py          # 数据存储模块
 ├── technical_analysis.py    # 技术分析模块
 ├── recommendation_engine.py # 推荐引擎
+├── real_data_sources_v2.py  # 真实数据源集成
+├── lightpanda_integration.py # Lightpanda爬虫集成
 ├── requirements.txt         # 依赖列表
 ├── config/
 │   └── config.yaml          # 配置文件
@@ -54,6 +60,9 @@ futures_crawler/
 │   ├── csv/                 # CSV数据存储
 │   ├── json/                # JSON数据存储
 │   └── futures.db           # SQLite数据库
+├── reports/                 # 每日报告目录
+│   ├── daily_report_*.md    # Markdown格式报告
+│   └── daily_data_*.json    # JSON格式数据
 └── logs/                    # 日志文件目录
 ```
 
@@ -257,9 +266,57 @@ Claude Code
 
 ## 更新日志
 
+### v1.1.0 (2026-03-19)
+- 新增真实数据集成（AKShare、API直连）
+- 新增每日报告自动生成功能
+- 新增GitHub自动提交
+- 新增定时任务支持
+- 新增Lightpanda集成模块
+
 ### v1.0.0 (2026-03-19)
 - 初始版本发布
 - 支持三大数据源爬取
 - 完整的技术分析模块
 - 操作推荐引擎
 - 多种数据存储方式
+
+## 每日报告自动化
+
+### 生成每日报告
+
+```bash
+# 使用真实数据生成报告
+python3 daily_report_real.py
+
+# 查看生成的报告
+cat reports/daily_report_*.md
+```
+
+### 设置定时任务
+
+```bash
+# 自动安装定时任务（工作日15:30）
+./setup_cron.sh
+
+# 手动运行每日任务
+./run_daily.sh
+```
+
+### 定时任务配置
+
+编辑 `crontab -e` 添加自定义时间：
+
+```bash
+# 每天15:30生成报告
+30 15 * * * /root/projects/Test2/futures_crawler/run_daily.sh
+
+# 每6小时生成一次
+0 */6 * * * /root/projects/Test2/futures_crawler/run_daily.sh
+```
+
+### GitHub仓库
+
+项目会自动将每日报告推送到GitHub：
+- 仓库地址：https://github.com/chenjingxiong/futures-crawler-daily
+- 报告目录：`reports/`
+- 历史数据：JSON格式存储
