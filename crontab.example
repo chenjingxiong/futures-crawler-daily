@@ -1,0 +1,26 @@
+# 每日期货报告定时任务配置示例
+# 将以下内容添加到你的crontab中: crontab -e
+
+# 每天下午3点30分生成报告（期货收盘后）
+30 15 * * 1-5 /root/projects/Test2/futures_crawler/run_daily.sh
+
+# 每天晚上8点生成报告
+0 20 * * * /root/projects/Test2/futures_crawler/run_daily.sh
+
+# 每天早上9点生成报告
+0 9 * * * /root/projects/Test2/futures_crawler/run_daily.sh
+
+# 每天中午12点生成报告
+0 12 * * * /root/projects/Test2/futures_crawler/run_daily.sh
+
+# 每6小时生成一次报告
+0 */6 * * * /root/projects/Test2/futures_crawler/run_daily.sh
+
+# Cron格式说明:
+# ┌───────────── 分钟 (0 - 59)
+# │ ┌─────────── 小时 (0 - 23)
+# │ │ ┌───────── 日期 (1 - 31)
+# │ │ │ ┌─────── 月份 (1 - 12)
+# │ │ │ │ ┌───── 星期 (0 - 7，0和7都是周日)
+# │ │ │ │ │
+# * * * * * command
