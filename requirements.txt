@@ -13,6 +13,9 @@ fake-useragent>=1.4.0
 akshare>=1.14.0
 tushare>=1.4.0
 
+# 浏览器自动化（用于API失效时的备用数据源）
+playwright>=1.40.0
+
 # 技术分析
 pandas-ta>=0.3.14b
 ta>=0.11.0
@@ -32,10 +35,3 @@ pyyaml>=6.0.0
 
 # 可视化（可选）
 plotly>=5.18.0
-
-# 浏览器自动化（可选）
-selenium>=4.18.0
-webdriver-manager>=4.0.0
-
-# Lightpanda（可选，需要单独安装）
-# lightpanda  # 使用: pip install lightpanda
