@@ -285,12 +285,23 @@ Claude Code
 ### 生成每日报告
 
 ```bash
-# 使用真实数据生成报告
-python3 daily_report_real.py
+# 使用真实数据生成报告（无模拟数据）
+python3 daily_report_real_only.py
 
 # 查看生成的报告
 cat reports/daily_report_*.md
 ```
+
+### 数据源说明
+
+系统使用以下真实数据源，自动切换：
+
+1. **AKShare** - 优先使用
+2. **东方财富API** - 备用数据源
+3. **新浪期货API** - 备用数据源
+4. **Lightpanda** - 当API失效时使用浏览器爬取
+
+**重要**: 本系统不包含任何模拟数据，所有分析基于真实市场数据。
 
 ### 设置定时任务
 

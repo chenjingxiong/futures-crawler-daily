@@ -21,8 +21,8 @@ echo "========================================" | tee -a "$LOG_FILE"
 #     source venv/bin/activate
 # fi
 
-# 运行Python脚本（真实数据版本）
-python3 daily_report_real.py 2>&1 | tee -a "$LOG_FILE"
+# 运行Python脚本（仅真实数据版本，无模拟数据）
+python3 daily_report_real_only.py 2>&1 | tee -a "$LOG_FILE"
 
 # 检查执行结果
 if [ ${PIPESTATUS[0]} -eq 0 ]; then
