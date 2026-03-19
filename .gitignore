@@ -1,0 +1,39 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+dist/
+build/
+.venv/
+venv/
+
+# Data
+data/csv/*.csv
+data/json/*.json
+data/futures.db
+data/futures.db-journal
+
+# Logs
+logs/*.log
+*.log
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Config (if contains sensitive data)
+config/config.local.yaml
+
+# Keep directory structure
+!data/csv/.gitkeep
+!data/json/.gitkeep
+!logs/.gitkeep

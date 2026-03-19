@@ -1,0 +1,194 @@
+# 期货爬虫系统配置文件
+
+# 数据源配置
+sources:
+  eastmoney:
+    name: "东方财富期货"
+    base_url: "https://futures.eastmoney.com"
+    enabled: true
+    timeout: 30
+    retry: 3
+
+  sina:
+    name: "新浪期货"
+    base_url: "http://finance.sina.com.cn/futuremarket"
+    enabled: true
+    timeout: 30
+    retry: 3
+
+  tonghuashun:
+    name: "同花顺期货"
+    base_url: "https://q.10jqka.com.cn/futures"
+    enabled: true
+    timeout: 30
+    retry: 3
+
+  hexun:
+    name: "和讯期货"
+    base_url: "http://futures.hexun.com"
+    enabled: true
+    timeout: 30
+    retry: 3
+
+# 期货品种配置
+futures_categories:
+  - name: "商品期货"
+    subcategories:
+      - name: "金属"
+        codes: ["CU", "AL", "ZN", "PB", "NI", "SN", "AU", "AG"]
+      - name: "能源化工"
+        codes: ["RB", "HC", "I", "J", "JM", "RU", "BU", "FG", "MA", "PP", "L", "V", "EG", "SC", "FU"]
+      - name: "农产品"
+        codes: ["M", "Y", "P", "A", "C", "CS", "JD", "LH", "AP", "SR", "CF", "RM", "OI", "RS", "RI", "WH", "PM", "JR", "LR", "PK"]
+      - name: "贵金属"
+        codes: ["AU", "AG"]
+
+  - name: "金融期货"
+    subcategories:
+      - name: "股指期货"
+        codes: ["IF", "IH", "IC", "IM"]
+      - name: "国债期货"
+        codes: ["T", "TF", "TS", "TL"]
+
+# 数据存储配置
+storage:
+  type: "both"  # csv, json, database, both
+
+  csv:
+    path: "./data/csv"
+    filename_format: "{category}_{date}.csv"
+
+  json:
+    path: "./data/json"
+    filename_format: "{category}_{date}.json"
+
+  database:
+    type: "sqlite"  # sqlite, mysql, postgresql
+    sqlite_path: "./data/futures.db"
+    # mysql配置（如需要）
+    mysql_host: "localhost"
+    mysql_port: 3306
+    mysql_user: "root"
+    mysql_password: ""
+    mysql_database: "futures_db"
+
+# 分析配置
+analysis:
+  # 技术指标
+  indicators:
+    - MA      # 移动平均线
+    - EMA     # 指数移动平均线
+    - MACD    # MACD指标
+    - RSI     # 相对强弱指标
+    - BOLL    # 布林带
+    - KDJ     # KDJ指标
+    - ATR     # 平均真实波幅
+    - VOLUME  # 成交量
+
+  # 分析周期
+  periods:
+    intraday: [5, 15, 30, 60]     # 日内周期（分钟）
+    daily: [1, 5, 10, 20, 60]      # 日线周期（天）
+    weekly: [4, 12, 26]            # 周线周期（周）
+    monthly: [3, 6, 12]            # 月线周期（月）
+
+  # 推荐配置
+  recommendation:
+    # 看涨信号权重
+    bullish_signals:
+      macd_cross_above: 2
+      rsi_oversold: 1.5
+      price_above_ma20: 1
+      volume_increase: 0.5
+      boll_lower_touch: 1.5
+
+    # 看跌信号权重
+    bearish_signals:
+      macd_cross_below: 2
+      rsi_overbought: 1.5
+      price_below_ma20: 1
+      volume_decrease: 0.5
+      boll_upper_touch: 1.5
+
+    # 信号阈值
+    thresholds:
+      strong_buy: 4
+      buy: 2
+      neutral_range: [-2, 2]
+      sell: -2
+      strong_sell: -4
+
+# 爬虫配置
+crawler:
+  # 并发数
+  max_workers: 5
+
+  # 请求间隔（秒）
+  request_interval: 1
+
+  # User-Agent轮换
+  rotate_ua: true
+
+  # 代理配置（如需要）
+  use_proxy: false
+  proxy_list: []
+
+  # Headless浏览器选项
+  use_selenium: false
+  headless: true
+
+# 定时任务配置
+scheduler:
+  enabled: true
+  tasks:
+    - name: "实时行情抓取"
+      type: "realtime"
+      cron: "*/10 * * * *"  # 每10分钟
+      enabled: true
+
+    - name: "日终数据分析"
+      type: "daily_analysis"
+      cron: "15 15 * * 1-5"  # 工作日15:15
+      enabled: true
+
+    - name: "周报生成"
+      type: "weekly_report"
+      cron: "0 16 * * 5"  # 周五16:00
+      enabled: true
+
+# 日志配置
+logging:
+  level: "INFO"  # DEBUG, INFO, WARNING, ERROR
+  path: "./logs"
+  max_file_size: "10MB"
+  backup_count: 5
+
+# 通知配置
+notification:
+  enabled: false
+  # 钉钉通知
+  dingtalk:
+    enabled: false
+    webhook: ""
+
+  # 邮件通知
+  email:
+    enabled: false
+    smtp_host: ""
+    smtp_port: 587
+    username: ""
+    password: ""
+    recipients: []
+
+# 输出配置
+output:
+  console:
+    enabled: true
+    format: "table"  # table, json, simple
+
+  file:
+    enabled: true
+    format: "html"  # html, markdown, json
+
+  # 报告模板
+  report_template: "default"
